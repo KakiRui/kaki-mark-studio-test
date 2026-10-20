@@ -25,9 +25,9 @@
   --module-highlight:rgba(255,255,255,.72);--canvas-shadow:rgba(45,42,33,.18);
   --sheet-outline:rgba(45,42,33,.4);--sheet-shadow:rgba(45,42,33,.12);
   --result-shadow:rgba(54,49,35,.055);--preset-settings-surface:rgba(251,250,246,.72);
-  --preset-swatch-base:#c9c2b6;--preset-swatch-tile:#b6b1a2;--preset-swatch-dot:#f4f1e6;
-  --preset-gradient-top:#d2ccbc;--preset-gradient-bottom:#191917;
-  --preset-band-top:#bab4a5;--preset-band-bottom:#27251e;
+  --preset-swatch-base:#3d5b57;--preset-swatch-tile:#3d5b57;--preset-swatch-dot:rgba(237,239,233,.36);
+  --preset-gradient-top:#a6b7af;--preset-gradient-bottom:#3d5b57;
+  --preset-band-top:#6f857c;--preset-band-bottom:#3d5b57;
   --radius-lg:24px;--radius-md:16px;--radius-sm:10px;
   --serif:"Kaki Serif","Songti SC",Georgia,serif;
   --sans:"Kaki Sans","PingFang SC","Helvetica Neue",sans-serif;
@@ -58,9 +58,32 @@
   --module-highlight:rgba(255,255,255,.7);--canvas-shadow:rgba(37,44,57,.2);
   --sheet-outline:rgba(53,62,76,.34);--sheet-shadow:rgba(47,54,69,.12);
   --result-shadow:rgba(47,54,69,.055);--preset-settings-surface:rgba(248,249,251,.7);
-  --preset-swatch-base:#bbc3cb;--preset-swatch-tile:#adb8c3;--preset-swatch-dot:#eef1f3;
-  --preset-gradient-top:#c8cdd4;--preset-gradient-bottom:#454957;
-  --preset-band-top:#bcc5cd;--preset-band-bottom:#484a59;
+}
+:root[data-theme="pine-smoke"]{
+  --paper:#edefe9;--paper-deep:#dfe6df;--surface:#f8faf6;--surface-2:#f0f4ef;
+  --ink:#2f403b;--ink-soft:#5c7069;--ink-faint:#83948c;--line:rgba(61,91,87,.13);
+  --line-strong:rgba(61,91,87,.24);--lime:#d2ddd6;--lime-deep:#6f857c;--lime-ink:#31463f;
+  --clay:#3d5b57;--danger:#966662;--shadow:0 24px 60px rgba(47,67,60,.09);
+  --accent:#3d5b57;--accent-ring:rgba(61,91,87,.12);--accent-halo:rgba(111,133,124,.25);
+  --primary-hover:#2f4945;--primary-ink:#f8faf6;--toast-ink:#f8faf6;
+  --panel-surface:rgba(248,250,246,.86);--pill-surface:rgba(248,250,246,.62);
+  --panel-line:rgba(61,91,87,.11);--line-dashed:rgba(61,91,87,.23);
+  --hover-soft:rgba(61,91,87,.06);--surface-hover:#f1f5f0;--surface-drag:#e3e9e3;
+  --surface-active:#dce5df;--surface-disabled:#e8eee8;--danger-soft:#f0e4e1;
+  --collection-surface:rgba(235,241,236,.76);--preview-surface:#e3e9e3;
+  --preview-grid:rgba(61,91,87,.035);--checker-base:#e2e9e3;--checker:#d2ddd6;
+  --control-track:#d3dfd7;--switch-track:#cad8d0;--placeholder:#8a9a92;
+  --module-open-start:#f4f7f2;--module-open-end:#e6ece7;--tip-surface:#edf2ee;
+  --empty-sheet:#f8faf6;--empty-sheet-back:#d0ddd5;--empty-sheet-front-start:#a6b7af;
+  --empty-sheet-front-end:#d7e1da;--result-image:#e4eae5;--preview-frame:#e4ebe5;
+  --overlay-bg:rgba(27,38,35,.54);--overlay-strong-bg:rgba(21,31,28,.81);
+  --welcome-start:#f8faf6;--welcome-end:#e6ece7;
+  --welcome-grid:rgba(61,91,87,.045);--light-ink:#f8faf6;--light-line:rgba(255,255,255,.7);
+  --body-dot:rgba(61,83,76,.052);--panel-shadow:rgba(47,67,60,.045);
+  --mode-shadow:rgba(47,67,60,.075);--module-shadow:rgba(47,67,60,.07);
+  --module-highlight:rgba(255,255,255,.7);--canvas-shadow:rgba(38,52,47,.2);
+  --sheet-outline:rgba(61,91,87,.34);--sheet-shadow:rgba(47,67,60,.12);
+  --result-shadow:rgba(47,67,60,.055);--preset-settings-surface:rgba(248,250,246,.7);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;max-width:100%;overflow-x:clip}
@@ -121,6 +144,10 @@ svg{display:block;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap
 .theme-option-frost i:nth-child(1){height:12px;background:#f8f9fb}
 .theme-option-frost i:nth-child(2){height:19px;background:#8b91a5}
 .theme-option-frost i:nth-child(3){height:25px;background:#34404d}
+.theme-option-pine{background:linear-gradient(135deg,#edefe9,#d2ddd6)}
+.theme-option-pine i:nth-child(1){height:12px;background:#edefe9}
+.theme-option-pine i:nth-child(2){height:19px;background:#6f857c}
+.theme-option-pine i:nth-child(3){height:25px;background:#3d5b57}
 .theme-option-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
 .theme-option-copy strong{font-size:10px;font-weight:650;color:var(--ink)}
 .theme-option-copy small{font-size:8px;color:var(--ink-faint)}
