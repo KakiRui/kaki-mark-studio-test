@@ -17,7 +17,8 @@
   --module-open-start:#f7f3e7;--module-open-end:#ece7d9;--tip-surface:#f5f3e8;
   --empty-sheet:#f9f7ef;--empty-sheet-back:#dcd7c9;--empty-sheet-front-start:#bab1a2;
   --empty-sheet-front-end:#ddd5c5;--result-image:#e8e3d7;--preview-frame:#e9e5da;
-  --overlay:#1f1d17;--overlay-strong:#13120e;--welcome-start:#faf7ed;--welcome-end:#f0eadb;
+  --overlay-bg:rgba(31,29,23,.52);--overlay-strong-bg:rgba(19,18,14,.78);
+  --welcome-start:#faf7ed;--welcome-end:#f0eadb;
   --welcome-grid:rgba(48,45,36,.045);--light-ink:#fbfaf3;--light-line:rgba(255,255,255,.7);
   --body-dot:rgba(80,74,58,.055);--panel-shadow:rgba(54,49,35,.035);
   --radius-lg:24px;--radius-md:16px;--radius-sm:10px;
@@ -42,7 +43,8 @@
   --module-open-start:#f2f8fa;--module-open-end:#e4eef2;--tip-surface:#edf5f8;
   --empty-sheet:#f8fcfd;--empty-sheet-back:#d5e3e8;--empty-sheet-front-start:#a9bec7;
   --empty-sheet-front-end:#dce8ec;--result-image:#e4edf1;--preview-frame:#e5eef2;
-  --overlay:#172831;--overlay-strong:#102029;--welcome-start:#f7fbfc;--welcome-end:#e8f1f5;
+  --overlay-bg:rgba(23,40,49,.52);--overlay-strong-bg:rgba(16,32,41,.78);
+  --welcome-start:#f7fbfc;--welcome-end:#e8f1f5;
   --welcome-grid:rgba(45,75,89,.045);--light-ink:#f7fbfc;--light-line:rgba(255,255,255,.7);
   --body-dot:rgba(45,90,108,.055);--panel-shadow:rgba(42,70,84,.045);
 }
@@ -351,7 +353,7 @@ details summary span{font-size:8.5px;color:var(--ink-faint);font-weight:400;marg
 .toast.error{background:var(--danger)}
 @keyframes toast-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
-.welcome-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:24px;background:color-mix(in srgb,var(--overlay) 52%,transparent);backdrop-filter:blur(10px);animation:welcome-fade .32s ease-out both}
+.welcome-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:24px;background:var(--overlay-bg);backdrop-filter:blur(10px);animation:welcome-fade .32s ease-out both}
 .welcome-card{position:relative;width:min(620px,100%);max-height:calc(100vh - 48px);overflow:auto;padding:42px 44px 34px;border:1px solid rgba(255,255,255,.38);border-radius:24px;background:linear-gradient(145deg,var(--welcome-start) 0%,var(--welcome-end) 100%);box-shadow:0 34px 90px rgba(22,20,15,.32);animation:welcome-rise .5s cubic-bezier(.2,.8,.2,1) both}
 .welcome-grid-mark{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background-image:linear-gradient(var(--welcome-grid) 1px,transparent 1px),linear-gradient(90deg,var(--welcome-grid) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(to bottom,black,transparent 70%)}
 .welcome-kicker,.welcome-title,.welcome-lead,.welcome-steps,.welcome-footer{position:relative}
@@ -370,7 +372,7 @@ details summary span{font-size:8.5px;color:var(--ink-faint);font-weight:400;marg
 .welcome-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:22px}
 .welcome-footer>span{font-family:var(--mono);font-size:7.5px;letter-spacing:.5px;color:var(--ink-faint)}
 .welcome-overlay.is-closing{animation:welcome-fade-out .25s ease-in forwards}
-.image-preview-overlay{position:fixed;inset:0;z-index:115;display:grid;place-items:center;padding:24px;background:color-mix(in srgb,var(--overlay-strong) 78%,transparent);backdrop-filter:blur(8px);animation:welcome-fade .2s ease-out both}
+.image-preview-overlay{position:fixed;inset:0;z-index:115;display:grid;place-items:center;padding:24px;background:var(--overlay-strong-bg);backdrop-filter:blur(8px);animation:welcome-fade .2s ease-out both}
 .image-preview-card{position:relative;display:flex;flex-direction:column;align-items:center;max-width:min(1080px,96vw);max-height:94vh;padding:14px;border-radius:16px;background:var(--surface);box-shadow:0 30px 80px rgba(0,0,0,.34)}
 .image-preview-frame{display:grid;place-items:center;min-height:0;max-height:calc(94vh - 90px);overflow:hidden;border-radius:9px;background:var(--preview-frame)}
 .image-preview-frame img{display:block;max-width:100%;max-height:calc(94vh - 90px);object-fit:contain}
