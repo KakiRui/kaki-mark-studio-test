@@ -6,11 +6,11 @@
   const MAX_FILE_BYTES = 60 * 1024 * 1024;
   const STORAGE_KEY = 'kaki-mark-studio-settings-v7';
   const ONBOARDING_KEY = 'kaki-mark-studio-onboarding-v1';
-  const THEME_KEY = 'kaki-mark-studio-theme-v1';
+  const THEME_KEY = 'kaki-mark-studio-theme-v2';
   const PREVIEW_EDGE = 1500;
   const THEMES = Object.freeze({
-    original: { label: '原色', metaColor: '#f3f1e9' },
-    'mist-blue': { label: '晨雾蓝', metaColor: '#edf4f7' }
+    original: { label: '原色纸张', metaColor: '#f3f1e9' },
+    'frost-indigo': { label: '霜黛', metaColor: '#eceff2' }
   });
 
   const WATERMARK_DEFAULTS = Object.freeze({
@@ -183,7 +183,7 @@
   const el = {};
   let previewTimer = 0;
   let resizeTimer = 0;
-  let currentTheme = 'mist-blue';
+  let currentTheme = 'frost-indigo';
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const numberOr = (value, fallback) => {
@@ -260,7 +260,7 @@
       'smallThumb','smallName','smallRemoveBtn','smallTintCombo','smallShadowControls',
       'smallStatus','showWelcomeBtn','welcomeOverlay','welcomeStartBtn',
       'imagePreviewOverlay','imagePreviewImg','imagePreviewTitle','imagePreviewMeta','imagePreviewCloseBtn',
-      'themeToggleBtn','themeToggleLabel'
+      'themePicker','themeToggleBtn','themeToggleLabel','themeMenu'
     ];
     ids.forEach((id) => { el[id] = document.getElementById(id); });
     el.signaturePresetCards = Array.from(document.querySelectorAll('[data-signature-preset-option]'));
@@ -273,6 +273,7 @@
     el.collageOnlyControls = Array.from(document.querySelectorAll('.collage-only-control'));
     el.collageMarkPlacements = Array.from(document.querySelectorAll('.collage-mark-placement'));
     el.exportControls = Array.from(document.querySelectorAll('[data-export]'));
+    el.themeOptions = Array.from(document.querySelectorAll('[data-theme-option]'));
   }
 
   function toast(message, type = '') {
@@ -289,22 +290,25 @@
   }
 
   function applyTheme(theme, announce = false) {
-    currentTheme = THEMES[theme] ? theme : 'mist-blue';
-    const nextTheme = currentTheme === 'mist-blue' ? 'original' : 'mist-blue';
+    currentTheme = THEMES[theme] ? theme : 'frost-indigo';
     document.documentElement.dataset.theme = currentTheme;
     if (el.themeToggleLabel) el.themeToggleLabel.textContent = THEMES[currentTheme].label;
     if (el.themeToggleBtn) {
-      el.themeToggleBtn.setAttribute('aria-pressed', String(currentTheme === 'mist-blue'));
-      el.themeToggleBtn.setAttribute('aria-label', `切换到${THEMES[nextTheme].label}主题`);
-      el.themeToggleBtn.title = `切换到${THEMES[nextTheme].label}主题`;
+      el.themeToggleBtn.setAttribute('aria-label', `选择界面主题，当前为${THEMES[currentTheme].label}`);
+      el.themeToggleBtn.title = '选择界面主题';
     }
+    el.themeOptions.forEach((option) => {
+      const selected = option.dataset.themeOption === currentTheme;
+      option.classList.toggle('active', selected);
+      option.setAttribute('aria-checked', String(selected));
+    });
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) metaThemeColor.content = THEMES[currentTheme].metaColor;
     if (announce) toast(`已切换至${THEMES[currentTheme].label}主题`);
   }
 
   function restoreTheme() {
-    let savedTheme = 'mist-blue';
+    let savedTheme = 'frost-indigo';
     try {
       const stored = localStorage.getItem(THEME_KEY);
       if (THEMES[stored]) savedTheme = stored;
@@ -312,12 +316,35 @@
     applyTheme(savedTheme);
   }
 
-  function toggleTheme() {
-    const nextTheme = currentTheme === 'mist-blue' ? 'original' : 'mist-blue';
-    applyTheme(nextTheme, true);
+  function setThemeMenu(open, { focus } = {}) {
+    if (!el.themeMenu || !el.themeToggleBtn) return;
+    el.themeMenu.hidden = !open;
+    el.themeToggleBtn.setAttribute('aria-expanded', String(open));
+    if (!open) return;
+    const target = el.themeOptions.find((option) => option.classList.contains('active')) || el.themeOptions[0];
+    if (focus && target) target.focus();
+  }
+
+  function closeThemeMenu({ restoreFocus = false } = {}) {
+    if (!el.themeMenu || el.themeMenu.hidden) return;
+    setThemeMenu(false);
+    if (restoreFocus) el.themeToggleBtn.focus();
+  }
+
+  function toggleThemeMenu() {
+    if (!el.themeMenu) return;
+    if (el.themeMenu.hidden) setThemeMenu(true, { focus: true });
+    else closeThemeMenu({ restoreFocus: true });
+  }
+
+  function chooseTheme(theme) {
+    if (!THEMES[theme]) return;
+    const changed = currentTheme !== theme;
+    applyTheme(theme, changed);
     try {
-      localStorage.setItem(THEME_KEY, nextTheme);
+      localStorage.setItem(THEME_KEY, theme);
     } catch (_) { /* theme still applies for the current session */ }
+    closeThemeMenu({ restoreFocus: true });
   }
 
   function syncRange(input, outputEl, suffix = '%') {
@@ -2204,7 +2231,34 @@
   }
 
   function bindControls() {
-    el.themeToggleBtn.addEventListener('click', toggleTheme);
+    el.themeToggleBtn.addEventListener('click', toggleThemeMenu);
+    el.themeOptions.forEach((option) => {
+      option.addEventListener('click', () => chooseTheme(option.dataset.themeOption));
+    });
+    document.addEventListener('click', (event) => {
+      if (el.themeMenu && !el.themeMenu.hidden && !el.themePicker.contains(event.target)) closeThemeMenu();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (!el.themeMenu || el.themeMenu.hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeThemeMenu({ restoreFocus: true });
+        return;
+      }
+      if (event.key === 'Tab') {
+        closeThemeMenu();
+        return;
+      }
+      if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const currentIndex = Math.max(0, el.themeOptions.indexOf(document.activeElement));
+      let nextIndex = currentIndex;
+      if (event.key === 'Home') nextIndex = 0;
+      else if (event.key === 'End') nextIndex = el.themeOptions.length - 1;
+      else if (event.key === 'ArrowDown') nextIndex = (currentIndex + 1) % el.themeOptions.length;
+      else if (event.key === 'ArrowUp') nextIndex = (currentIndex - 1 + el.themeOptions.length) % el.themeOptions.length;
+      el.themeOptions[nextIndex]?.focus();
+    });
     el.resetSettingsBtn.addEventListener('click', resetSettings);
     el.clearImagesBtn.addEventListener('click', clearFiles);
     el.prevBtn.addEventListener('click', () => goPage(-1));
