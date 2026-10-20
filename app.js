@@ -6,12 +6,13 @@
   const MAX_FILE_BYTES = 60 * 1024 * 1024;
   const STORAGE_KEY = 'kaki-mark-studio-settings-v7';
   const ONBOARDING_KEY = 'kaki-mark-studio-onboarding-v1';
-  const THEME_KEY = 'kaki-mark-studio-theme-v3';
+  const THEME_KEY = 'kaki-mark-studio-theme-v4';
   const PREVIEW_EDGE = 1500;
   const THEMES = Object.freeze({
     original: { label: '原色纸张', metaColor: '#f3f1e9' },
     'frost-indigo': { label: '霜黛', metaColor: '#eceff2' },
-    'pine-smoke': { label: '松烟青', metaColor: '#edefe9' }
+    'pine-smoke': { label: '松烟青', metaColor: '#edefe9' },
+    haitang: { label: '海棠', metaColor: '#f5f0ea' }
   });
 
   const WATERMARK_DEFAULTS = Object.freeze({
@@ -184,7 +185,7 @@
   const el = {};
   let previewTimer = 0;
   let resizeTimer = 0;
-  let currentTheme = 'pine-smoke';
+  let currentTheme = 'haitang';
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const numberOr = (value, fallback) => {
@@ -291,7 +292,7 @@
   }
 
   function applyTheme(theme, announce = false) {
-    currentTheme = THEMES[theme] ? theme : 'pine-smoke';
+    currentTheme = THEMES[theme] ? theme : 'haitang';
     document.documentElement.dataset.theme = currentTheme;
     if (el.themeToggleLabel) el.themeToggleLabel.textContent = THEMES[currentTheme].label;
     if (el.themeToggleBtn) {
@@ -309,7 +310,7 @@
   }
 
   function restoreTheme() {
-    let savedTheme = 'pine-smoke';
+    let savedTheme = 'haitang';
     try {
       const stored = localStorage.getItem(THEME_KEY);
       if (THEMES[stored]) savedTheme = stored;
