@@ -8,6 +8,7 @@
   const ONBOARDING_KEY = 'kaki-mark-studio-onboarding-v1';
   const THEME_KEY = 'kaki-mark-studio-theme-v5';
   const PREVIEW_EDGE = 1500;
+  const KAKI_PSD_TEMPLATE_SRC = 'assets/presets/kaki-heart-template.png';
   const THEMES = Object.freeze({
     original: { label: '原色纸张', metaColor: '#f3f1e9' },
     'frost-indigo': { label: '霜黛', metaColor: '#eceff2' },
@@ -98,8 +99,8 @@
     color: '#000000',
     strokeColor: '#ffffff',
     strokeWidth: 5 / 2000,
-    shadowOffsetX: 4 * Math.cos(109 * Math.PI / 180) / 2000,
-    shadowOffsetY: -4 * Math.sin(109 * Math.PI / 180) / 2000,
+    shadowAngle: 109,
+    shadowDistance: 4 / 2000,
     shadowBlur: 4 / 2000,
     shadowOpacity: 0.45
   });
@@ -234,6 +235,8 @@
   let previewTimer = 0;
   let resizeTimer = 0;
   let currentTheme = 'original';
+  let kakiTemplateImage = null;
+  let kakiTemplatePromise = null;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const numberOr = (value, fallback) => {
@@ -761,11 +764,16 @@
     }
     state.watermark.preset = name;
     Object.assign(state.watermark, PRESETS[name]);
+    if (name === 'kaki-psd') state.fullscreenPreset.preset = 'none';
     applyUiFromState();
     el.presetSettingsDetails.open = true;
     persistSettings();
-    if (name === 'kaki-psd') schedulePreviewForFont('javacom');
-    else schedulePreview();
+    if (name === 'kaki-psd') {
+      preloadKakiTemplate();
+      schedulePreviewForFont('javacom');
+    } else {
+      schedulePreview();
+    }
   }
 
   function applyFullscreenPreset(name) {
@@ -836,6 +844,26 @@
       };
       img.src = url;
     });
+  }
+
+  function preloadKakiTemplate() {
+    if (kakiTemplatePromise) return kakiTemplatePromise;
+    kakiTemplatePromise = new Promise((resolve) => {
+      const image = new Image();
+      image.decoding = 'async';
+      image.onload = () => {
+        kakiTemplateImage = image;
+        resolve(image);
+        schedulePreview();
+      };
+      image.onerror = () => {
+        kakiTemplatePromise = null;
+        console.error('Kaki 爱心模板加载失败');
+        resolve(null);
+      };
+      image.src = KAKI_PSD_TEMPLATE_SRC;
+    });
+    return kakiTemplatePromise;
   }
 
   async function createAssetRecord(file) {
@@ -1558,7 +1586,7 @@
     const minDim = Math.min(boxW, boxH);
     const text = resolveWatermarkText(wm.text, number).trim();
     const rightLabel = preset === 'band' && wm.bandRightEnabled ? bandRightLabel() : '';
-    if (!text && !rightLabel) return;
+    if (!text && !rightLabel && preset !== 'kaki-psd') return;
     const margin = minDim * (wm.margin / 100);
     const baseSize = minDim * (wm.size / 100);
 
@@ -1570,17 +1598,25 @@
     ctx.translate(dims.x, dims.y);
 
     if (preset === 'kaki-psd') {
+      const style = KAKI_PSD_SIGNATURE;
+      const artSize = minDim;
+      const artX = (boxW - artSize) / 2;
+      const artY = (boxH - artSize) / 2;
+      if (kakiTemplateImage) {
+        ctx.drawImage(kakiTemplateImage, artX, artY, artSize, artSize);
+      }
       if (!text) {
         ctx.restore();
         return;
       }
-      const style = KAKI_PSD_SIGNATURE;
-      const size = minDim * (style.fontSizePercent / 100);
-      const strokeWidth = minDim * style.strokeWidth * 2;
-      const shadowX = minDim * style.shadowOffsetX;
-      const shadowY = minDim * style.shadowOffsetY;
+      const size = artSize * (style.fontSizePercent / 100);
+      const strokeWidth = artSize * style.strokeWidth * 2;
+      // PSD's 109° is the global-light angle; Canvas casts the shadow in the opposite direction.
+      const shadowRadians = (style.shadowAngle + 180) * Math.PI / 180;
+      const shadowX = artSize * style.shadowDistance * Math.cos(shadowRadians);
+      const shadowY = -artSize * style.shadowDistance * Math.sin(shadowRadians);
       const shadowBlur = minDim * style.shadowBlur;
-      ctx.translate(boxW * style.anchorX, boxH * style.anchorY);
+      ctx.translate(artX + artSize * style.anchorX, artY + artSize * style.anchorY);
       ctx.rotate(style.rotate * Math.PI / 180);
       ctx.font = `400 ${size}px ${FONT_STACKS[style.font]}`;
       ctx.textAlign = 'right';
@@ -1847,6 +1883,7 @@
   }
 
   async function renderWatermarkToCanvas(canvas, record, index, maxEdge) {
+    if (state.watermark.preset === 'kaki-psd') await preloadKakiTemplate();
     const img = await loadImage(record.file);
     const scale = Math.min(1, maxEdge / Math.max(img.naturalWidth, img.naturalHeight));
     const width = Math.max(1, Math.round(img.naturalWidth * scale));
@@ -1966,6 +2003,7 @@
   }
 
   async function renderCollagePage(canvas, pageIndex, maxEdge) {
+    if (state.watermark.preset === 'kaki-psd') await preloadKakiTemplate();
     const page = collagePages()[pageIndex];
     if (!page) return { width: 1, height: 1 };
     const visible = page.records;
@@ -2583,6 +2621,7 @@
     syncStageTitle();
     schedulePreview();
     warmCustomFonts();
+    preloadKakiTemplate();
     let onboardingSeen = false;
     try {
       onboardingSeen = localStorage.getItem(ONBOARDING_KEY) === 'seen';
