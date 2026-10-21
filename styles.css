@@ -348,7 +348,7 @@ output{color:var(--ink-faint);font-family:var(--mono);font-size:9px;float:right;
 .swatch-tiled{background-image:radial-gradient(var(--preset-preview-dot) 1px,transparent 1px);background-size:9px 9px;font-family:var(--mono);font-size:5.5px;text-shadow:0 1px rgba(255,255,255,.28)}
 .swatch-gradient{background-image:linear-gradient(180deg,transparent 30%,var(--preset-preview-depth) 100%);color:rgba(255,255,255,.96);font-size:6px;align-content:end;padding-bottom:4px;letter-spacing:.7px;text-shadow:0 1px 2px rgba(20,20,20,.28)}
 .swatch-band{background-image:linear-gradient(180deg,transparent 60%,var(--preset-preview-depth) 60%);color:rgba(255,255,255,.96);font-size:6px;align-content:end;padding-bottom:4px;font-family:var(--mono);text-shadow:0 1px 2px rgba(20,20,20,.28)}
-.swatch-kaki-psd{background-color:#c8c0b5;background-image:url("assets/presets/kaki-heart-template.png");background-position:center;background-size:cover;color:#171512;font-family:"Javacom",cursive;font-size:8px;font-weight:400;text-shadow:0 1px 0 #fff,0 1px 2px rgba(20,20,20,.28);transform:rotate(-6deg)}
+.swatch-kaki-psd{background-color:#c8c0b5;background-image:url("assets/presets/kaki-heart-template.png?v=3");background-position:center;background-size:cover;color:#171512;font-family:"Javacom",cursive;font-size:8px;font-weight:400;text-shadow:0 1px 0 #fff,0 1px 2px rgba(20,20,20,.28);transform:rotate(-6deg)}
 .preset-card span:last-child{display:flex;flex-direction:column;gap:3px;min-width:0}
 .preset-card strong{font-size:9.5px;font-weight:650;white-space:nowrap}
 .preset-card small{font-size:8px;color:var(--ink-faint);white-space:nowrap}

@@ -8,7 +8,7 @@
   const ONBOARDING_KEY = 'kaki-mark-studio-onboarding-v1';
   const THEME_KEY = 'kaki-mark-studio-theme-v5';
   const PREVIEW_EDGE = 1500;
-  const KAKI_PSD_TEMPLATE_SRC = 'assets/presets/kaki-heart-template.png';
+  const KAKI_PSD_TEMPLATE_SRC = 'assets/presets/kaki-heart-template.png?v=3';
   const THEMES = Object.freeze({
     original: { label: '原色纸张', metaColor: '#f3f1e9' },
     'frost-indigo': { label: '霜黛', metaColor: '#eceff2' },
