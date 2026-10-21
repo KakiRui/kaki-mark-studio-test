@@ -13,7 +13,8 @@
     'frost-indigo': { label: '霜黛', metaColor: '#eceff2' },
     'pine-smoke': { label: '松烟青', metaColor: '#edefe9' },
     haitang: { label: '海棠', metaColor: '#f5f0ea' },
-    'lotus-pink': { label: '藕荷', metaColor: '#f6f2f4' }
+    'lotus-pink': { label: '藕荷', metaColor: '#f6f2f4' },
+    dianmo: { label: '点墨', metaColor: '#111214' }
   });
 
   const WATERMARK_DEFAULTS = Object.freeze({
@@ -160,8 +161,20 @@
     mono: '"SFMono-Regular",Consolas,"Liberation Mono",monospace',
     'alfa-slab': '"Alfa Slab One","Kaki Sans",sans-serif',
     'bebas-neue': '"Bebas Neue","Kaki Sans",sans-serif',
-    'zcool-kuaile': '"ZCOOL KuaiLe","Kaki Sans",sans-serif'
+    'zcool-kuaile': '"ZCOOL KuaiLe","Kaki Sans",sans-serif',
+    'butter-bread': '"Kaki Butter Bread","Kaki Sans",sans-serif',
+    'huiwen-mincho': '"Kaki Huiwen Mincho","Kaki Serif",serif',
+    'love-song': '"Kaki Love Song","Kaki Sans",cursive'
   };
+
+  const CUSTOM_FONT_FAMILIES = Object.freeze({
+    'alfa-slab': '"Alfa Slab One"',
+    'bebas-neue': '"Bebas Neue"',
+    'zcool-kuaile': '"ZCOOL KuaiLe"',
+    'butter-bread': '"Kaki Butter Bread"',
+    'huiwen-mincho': '"Kaki Huiwen Mincho"',
+    'love-song': '"Kaki Love Song"'
+  });
 
   const state = {
     files: [],
@@ -1391,11 +1404,25 @@
 
   function warmCustomFonts() {
     if (!document.fonts) return;
-    const fontNames = ['"Alfa Slab One"', '"Bebas Neue"', '"ZCOOL KuaiLe"'];
+    const fontKeys = new Set(['alfa-slab', 'bebas-neue']);
+    [state.watermark.font, state.fullscreenPreset.font, state.collage.numberFont].forEach((key) => {
+      if (CUSTOM_FONT_FAMILIES[key]) fontKeys.add(key);
+    });
+    const fontNames = [...fontKeys].map((key) => CUSTOM_FONT_FAMILIES[key]);
     const loaders = typeof document.fonts.load === 'function'
       ? fontNames.map((family) => document.fonts.load(`600 24px ${family}`))
       : [];
     Promise.allSettled([...loaders, document.fonts.ready]).then(() => schedulePreview());
+  }
+
+  function schedulePreviewForFont(fontKey) {
+    const family = CUSTOM_FONT_FAMILIES[fontKey];
+    if (!family || !document.fonts || typeof document.fonts.load !== 'function') {
+      schedulePreview();
+      return;
+    }
+    schedulePreview();
+    document.fonts.load(`600 24px ${family}`).catch(() => null).then(() => schedulePreview());
   }
 
   function resolveWatermarkText(template, index) {
@@ -2335,7 +2362,8 @@
           syncRange(control, outputs[control.dataset.fullscreenPreset], control.dataset.fullscreenPreset === 'rotate' ? '°' : (control.dataset.fullscreenPreset === 'gap' ? '' : '%'));
         }
         persistSettings();
-        schedulePreview();
+        if (control.dataset.fullscreenPreset === 'font') schedulePreviewForFont(control.value);
+        else schedulePreview();
       });
     });
 
@@ -2357,7 +2385,8 @@
           syncRange(control, map[control.dataset.watermark], control.dataset.watermark === 'rotate' ? '°' : (control.dataset.watermark === 'gap' ? '' : '%'));
         }
         persistSettings();
-        schedulePreview();
+        if (control.dataset.watermark === 'font') schedulePreviewForFont(control.value);
+        else schedulePreview();
       });
     });
 
@@ -2387,7 +2416,8 @@
         renderQueue();
         updatePager();
         persistSettings();
-        schedulePreview();
+        if (control.dataset.collage === 'numberFont') schedulePreviewForFont(control.value);
+        else schedulePreview();
       });
     });
 
