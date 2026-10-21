@@ -159,10 +159,8 @@
     serif: '"Songti SC","STSong","SimSun",Georgia,serif',
     mono: '"SFMono-Regular",Consolas,"Liberation Mono",monospace',
     'alfa-slab': '"Alfa Slab One","Kaki Sans",sans-serif',
-    honk: '"Honk","Kaki Sans",sans-serif',
     'bebas-neue': '"Bebas Neue","Kaki Sans",sans-serif',
-    'bodoni-moda': '"Bodoni Moda","Kaki Serif",serif',
-    caveat: '"Caveat","Kaki Sans",cursive'
+    'zcool-kuaile': '"ZCOOL KuaiLe","Kaki Sans",sans-serif'
   };
 
   const state = {
@@ -1393,7 +1391,7 @@
 
   function warmCustomFonts() {
     if (!document.fonts) return;
-    const fontNames = ['"Alfa Slab One"', '"Honk"', '"Bebas Neue"', '"Bodoni Moda"', '"Caveat"'];
+    const fontNames = ['"Alfa Slab One"', '"Bebas Neue"', '"ZCOOL KuaiLe"'];
     const loaders = typeof document.fonts.load === 'function'
       ? fontNames.map((family) => document.fonts.load(`600 24px ${family}`))
       : [];
