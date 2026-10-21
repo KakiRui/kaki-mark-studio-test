@@ -1,5 +1,10 @@
 @font-face{font-family:"Kaki Serif";src:local("Songti SC"),local("STSong"),local("SimSun");font-display:swap}
 @font-face{font-family:"Kaki Sans";src:local("PingFang SC"),local("Hiragino Sans GB"),local("Microsoft YaHei");font-display:swap}
+@font-face{font-family:"Alfa Slab One";src:url("assets/fonts/alfa-slab-one-latin.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Honk";src:url("assets/fonts/honk-latin.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Bebas Neue";src:url("assets/fonts/bebas-neue-latin.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Bodoni Moda";src:url("assets/fonts/bodoni-moda-latin.woff2") format("woff2");font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:"Caveat";src:url("assets/fonts/caveat-latin.woff2") format("woff2");font-style:normal;font-weight:600;font-display:swap}
 :root{
   --paper:#f3f1e9;--paper-deep:#eae6da;--surface:#fbfaf6;--surface-2:#f5f2e9;
   --ink:#26251f;--ink-soft:#666257;--ink-faint:#918b7d;--line:rgba(45,42,33,.13);
@@ -260,7 +265,7 @@ svg{display:block;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap
 .queue-item:hover{border-color:var(--ink-soft)}
 .queue-item.dragging{opacity:.4}
 .queue-item.drop-target{outline:2px solid var(--accent);outline-offset:-2px}
-.queue-item.active{border-width:1px;border-color:var(--ink);box-shadow:0 0 0 .5px var(--selection-ring),0 0 0 1px var(--selection-halo)}
+.queue-item.active{border-width:1px;border-color:var(--ink);box-shadow:0 0 0 1px var(--selection-ring),0 0 0 2px var(--selection-halo)}
 .queue-item img{width:100%;height:100%;display:block;object-fit:cover;pointer-events:none}
 .queue-item span{position:absolute;left:4px;bottom:4px;background:rgba(30,28,22,.72);color:white;font-family:var(--mono);font-size:8px;line-height:1;padding:3px 4px;border-radius:3px}
 .queue-remove{position:absolute;right:3px;top:3px;width:18px;height:18px;border:0;border-radius:50%;background:rgba(30,28,22,.72);color:white;display:grid;place-items:center;font-size:13px;line-height:1;opacity:0;transition:opacity .2s}

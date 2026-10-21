@@ -12,9 +12,10 @@ A local-first batch image marking workspace for artists, photographers and small
   - **Watermark frame** — import a frame, replace its ink color while preserving the detected foreground, add a shadow, and choose whether it is applied to each cell or the finished sheet.
   - **Small watermark** — import a logo or signature with nine-point placement, offsets, scale, rotation, shadow, and cell-or-sheet compositing.
 - **Live preview** — edits are reflected immediately, with no server round-trip.
-- **Theme picker** — switch between the original warm-paper palette, Frost Indigo, Pine Smoke, Haitang, and the pink-violet Lotus palette. Each theme keeps the selection remembered, uses a readable preset preview background, and gives the active queue image a high-contrast themed selection ring.
+- **Theme picker** — switch between the original warm-paper palette, Frost Indigo, Pine Smoke, Haitang, and the pink-violet Lotus palette. First-time visitors start with the original palette; saved selections are remembered. Each theme uses a readable preset preview background and a high-contrast themed selection ring.
 - **Independent quick presets** — signature presets and the full-screen tiled preset keep separate settings, can run together, and each can be cleared by clicking its active card again.
 - **Fine-grained controls** — shadow distances and text outline strength use fine steps and scale proportionally with the rendered canvas.
+- **Bundled display fonts** — five self-hosted Latin display families are available for signatures, full-screen marks, and collage numbers, with clear Chinese names and Latin-only labels.
 - **Batch export** — write JPEG or PNG at a locked 2400 px long edge by default, unlock other sizes when needed, download one image, package the set as a ZIP, or load every finished image into an iOS-friendly long-press gallery.
 - **First-run guide** — an animated three-step introduction appears on the first visit and can be reopened from the header.
 - **Image inspection** — double-click any queued thumbnail to inspect the original image at a larger size; destructive removal requires confirmation.

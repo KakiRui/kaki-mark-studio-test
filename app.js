@@ -157,7 +157,12 @@
   const FONT_STACKS = {
     sans: '"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",sans-serif',
     serif: '"Songti SC","STSong","SimSun",Georgia,serif',
-    mono: '"SFMono-Regular",Consolas,"Liberation Mono",monospace'
+    mono: '"SFMono-Regular",Consolas,"Liberation Mono",monospace',
+    'alfa-slab': '"Alfa Slab One","Kaki Sans",sans-serif',
+    honk: '"Honk","Kaki Sans",sans-serif',
+    'bebas-neue': '"Bebas Neue","Kaki Sans",sans-serif',
+    'bodoni-moda': '"Bodoni Moda","Kaki Serif",serif',
+    caveat: '"Caveat","Kaki Sans",cursive'
   };
 
   const state = {
@@ -186,7 +191,7 @@
   const el = {};
   let previewTimer = 0;
   let resizeTimer = 0;
-  let currentTheme = 'lotus-pink';
+  let currentTheme = 'original';
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const numberOr = (value, fallback) => {
@@ -293,7 +298,7 @@
   }
 
   function applyTheme(theme, announce = false) {
-    currentTheme = THEMES[theme] ? theme : 'lotus-pink';
+    currentTheme = THEMES[theme] ? theme : 'original';
     document.documentElement.dataset.theme = currentTheme;
     if (el.themeToggleLabel) el.themeToggleLabel.textContent = THEMES[currentTheme].label;
     if (el.themeToggleBtn) {
@@ -311,7 +316,7 @@
   }
 
   function restoreTheme() {
-    let savedTheme = 'lotus-pink';
+    let savedTheme = 'original';
     try {
       const stored = localStorage.getItem(THEME_KEY);
       if (THEMES[stored]) savedTheme = stored;
@@ -1384,6 +1389,15 @@
         toast('预览生成失败，请重新导入图片', 'error');
       });
     }, 70);
+  }
+
+  function warmCustomFonts() {
+    if (!document.fonts) return;
+    const fontNames = ['"Alfa Slab One"', '"Honk"', '"Bebas Neue"', '"Bodoni Moda"', '"Caveat"'];
+    const loaders = typeof document.fonts.load === 'function'
+      ? fontNames.map((family) => document.fonts.load(`600 24px ${family}`))
+      : [];
+    Promise.allSettled([...loaders, document.fonts.ready]).then(() => schedulePreview());
   }
 
   function resolveWatermarkText(template, index) {
@@ -2467,6 +2481,7 @@
     updateActionAvailability();
     syncStageTitle();
     schedulePreview();
+    warmCustomFonts();
     let onboardingSeen = false;
     try {
       onboardingSeen = localStorage.getItem(ONBOARDING_KEY) === 'seen';
