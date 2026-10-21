@@ -260,7 +260,7 @@ svg{display:block;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap
 .queue-item:hover{border-color:var(--ink-soft)}
 .queue-item.dragging{opacity:.4}
 .queue-item.drop-target{outline:2px solid var(--accent);outline-offset:-2px}
-.queue-item.active{border-width:2px;border-color:var(--ink);box-shadow:0 0 0 1px var(--selection-ring),0 0 0 2px var(--selection-halo)}
+.queue-item.active{border-width:1px;border-color:var(--ink);box-shadow:0 0 0 1px var(--selection-ring),0 0 0 2px var(--selection-halo)}
 .queue-item img{width:100%;height:100%;display:block;object-fit:cover;pointer-events:none}
 .queue-item span{position:absolute;left:4px;bottom:4px;background:rgba(30,28,22,.72);color:white;font-family:var(--mono);font-size:8px;line-height:1;padding:3px 4px;border-radius:3px}
 .queue-remove{position:absolute;right:3px;top:3px;width:18px;height:18px;border:0;border-radius:50%;background:rgba(30,28,22,.72);color:white;display:grid;place-items:center;font-size:13px;line-height:1;opacity:0;transition:opacity .2s}
