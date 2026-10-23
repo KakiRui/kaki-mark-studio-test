@@ -85,8 +85,8 @@
   });
 
   const PRESETS = Object.freeze({
-    gradient: { opacity: 100, size: 5, stroke: 0, gradientStrength: 100, gradientHeight: 50, font: 'sans' },
-    band: { opacity: 100, size: 3.5, stroke: 0, font: 'mono', bandOpacity: 65, bandRightEnabled: true, bandRightMode: 'date' },
+    gradient: { opacity: 100, size: 5, stroke: 2, gradientStrength: 100, gradientHeight: 50, font: 'sans' },
+    band: { opacity: 100, size: 3.5, stroke: 6, font: 'mono', bandOpacity: 65, bandRightEnabled: true, bandRightMode: 'date' },
     'kaki-psd': { text: '@Kaki' }
   });
 
@@ -1764,9 +1764,16 @@
       ctx.restore();
 
       const maxWidth = boxW - margin * 2;
+      const ghostSize = fitFontSize(ctx, text, minDim * 0.18, maxWidth * 0.96);
       const size = fitFontSize(ctx, text, baseSize, maxWidth * 0.82);
       const signatureY = boxH - Math.max(size * 1.45, minDim * 0.075);
+      const ghostY = signatureY - ghostSize * 0.28;
+      drawText(ctx, text, boxW / 2, ghostY, ghostSize, 'center', 'middle', 0.17);
+      ctx.save();
+      ctx.shadowColor = hexToRgba(wm.gradientColor, 0.55);
+      ctx.shadowBlur = minDim * 0.025;
       drawText(ctx, text, boxW / 2, signatureY, size, 'center', 'middle');
+      ctx.restore();
     } else if (preset === 'band') {
       const bandH = Math.max(baseSize * 2.75, boxH * 0.085);
       const bandY = boxH - bandH;
