@@ -485,7 +485,7 @@ details summary span{font-size:8.5px;color:var(--ink-faint);font-weight:400;marg
 .module-save-button{width:100%;display:grid;grid-template-columns:29px minmax(0,1fr) auto;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--line-strong);border-radius:10px;background:linear-gradient(135deg,var(--surface),var(--surface-2));color:var(--ink);text-align:left;box-shadow:0 4px 12px var(--result-shadow);transition:border-color .2s,background .2s,transform .15s,box-shadow .2s}
 .module-save-button:hover{border-color:var(--ink-soft);background:linear-gradient(135deg,var(--surface),var(--surface-active));transform:translateY(-1px);box-shadow:0 7px 16px var(--result-shadow)}
 .module-save-button:active{transform:translateY(0)}
-.module-save-icon{width:29px;height:29px;display:grid;place-items:center;border-radius:8px;background:var(--ink);color:var(--surface)}
+.module-save-icon{width:29px;height:29px;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;background:var(--tip-surface);color:var(--ink)}
 .module-save-icon svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .module-save-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
 .module-save-copy strong{font-size:9.5px;font-weight:700;color:var(--ink);white-space:nowrap}
